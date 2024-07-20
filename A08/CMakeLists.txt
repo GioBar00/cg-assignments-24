@@ -26,18 +26,29 @@ else ()
     message(STATUS "Compiling shaders")
 
     # Compile shaders
-    function(compile_shader GLSL_FILE)
+    function(compile_shader SOURCE TARGET)
         add_custom_command(
-                OUTPUT ${GLSL_FILE}.spv
-                COMMAND ${GLSLC_EXECUTABLE} ${GLSL_FILE} -o ${GLSL_FILE}.spv
-                MAIN_DEPENDENCY ${GLSL_FILE}
+                OUTPUT ${TARGET}
+                COMMAND ${GLSLC_EXECUTABLE} ${SOURCE} -o ${TARGET}
+                MAIN_DEPENDENCY ${SOURCE}
         )
-        target_sources(${PROJECT_NAME} PRIVATE ${GLSL_FILE}.spv)
+        target_sources(${PROJECT_NAME} PRIVATE ${TARGET})
     endfunction()
     message(STATUS "Compiling shaders")
     file(GLOB SHADERS "shaders/*.vert" "shaders/*.frag")
     foreach(SHADER ${SHADERS})
-        compile_shader(${SHADER})
+        # Convert SomethingShader.vert to SomethingVert.spv and SomethingShader.frag to SomethingFrag.spv
+        get_filename_component(DIR ${SHADER} DIRECTORY)
+        get_filename_component(FILENAME ${SHADER} NAME_WE)
+        string(REPLACE "Shader" "" BASE_FILENAME ${FILENAME})
+        get_filename_component(EXTENSION ${SHADER} EXT)
+        if(${EXTENSION} STREQUAL ".vert")
+            set(NEW_FILENAME "${BASE_FILENAME}Vert.spv")
+        elseif(${EXTENSION} STREQUAL ".frag")
+            set(NEW_FILENAME "${BASE_FILENAME}Frag.spv")
+        endif()
+        set(NEW_FILEPATH "${DIR}/${NEW_FILENAME}")
+        compile_shader(${SHADER} ${NEW_FILEPATH})
     endforeach()
     message(STATUS "Shaders compiled")
 endif ()

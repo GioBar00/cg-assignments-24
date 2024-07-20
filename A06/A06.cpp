@@ -77,7 +77,7 @@ class A06 : public BaseProject {
 				});
 
 		// Pipelines [Shader couples]
-		P.init(this, &VD, "shaders/ShaderVert.spv", "shaders/ShaderFrag.spv", {&DSL});
+		P.init(this, &VD, "shaders/Shader.vert.spv", "shaders/Shader.frag.spv", {&DSL});
 		P.setAdvancedFeatures(VK_COMPARE_OP_LESS_OR_EQUAL, VK_POLYGON_MODE_FILL,
  								    VK_CULL_MODE_NONE, false);
 		// Models, textures and Descriptors (values assigned to the uniforms)
