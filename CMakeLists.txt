@@ -17,6 +17,10 @@ add_subdirectory(A09)
 add_subdirectory(A10)
 
 # Add examples
+add_subdirectory(E01)
+add_subdirectory(E02)
+add_subdirectory(E04)
 add_subdirectory(E05)
+add_subdirectory(E07)
 add_subdirectory(E08)
 add_subdirectory(E09)
